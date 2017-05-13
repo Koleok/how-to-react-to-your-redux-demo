@@ -16,8 +16,8 @@ const CardContent = styled.div`
 `
 
 const Component = ({ title, author }) => (
-  <Col xs={6} md={3}>
-    <Card key={title}>
+  <Col xs={6} md={3} key={title}>
+    <Card>
       <CardContent>
         <h4><b>{author}</b></h4>
         <p>{title}</p>
