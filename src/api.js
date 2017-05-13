@@ -1,4 +1,4 @@
-import F from 'fluture'
+import F from 'fluture/es5'
 import fetch from 'isomorphic-fetch'
 
 const API_URL = 'https://thundercomb-poetry-db-v1.p.mashape.com'
