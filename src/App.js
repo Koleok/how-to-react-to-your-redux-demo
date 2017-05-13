@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
-import { string } from 'prop-types'
+import React from 'react'
+import { arrayOf, shape, string } from 'prop-types'
 import { Row } from 'react-styled-flexboxgrid'
+import { compose, lifecycle } from 'recompose'
+import { connect } from 'react-redux'
 
-import { getPoems } from './api'
+import { fetchPoems } from './redux'
 import { createPoem } from './utils'
 
 import {
@@ -15,38 +17,52 @@ import {
   Logo,
 } from './components'
 
-class App extends Component {
-  static propTypes = { poem: string }
+const App = ({ poems, generatedPoem }) => (
+  <AppContainer>
+    <Header>
+      <Logo>❤️</Logo>
+      <h2>{"Mother's day Poetry Generator"}</h2>
+    </Header>
+    <Intro>
+      A moving poem your mother will love
+    </Intro>
+    <Blockquote>
+      {generatedPoem}
+    </Blockquote>
+    <Cite>-mbot</Cite>
+    <h2>Credits</h2>
+    <Row>
+      {poems.map(Card)}
+    </Row>
+  </AppContainer>
+)
 
-  state = { generatedPoem: '', poems: [] }
-
-  componentDidMount() {
-    getPoems('/title/mother')
-      .map(poems => ({ poems, generatedPoem: createPoem(poems) }))
-      .fork(console.error, this.setState.bind(this))
-  }
-
-  render() {
-    return (
-      <AppContainer>
-        <Header>
-          <Logo>❤️</Logo>
-          <h2>{"Mother's day Poetry Generator"}</h2>
-        </Header>
-        <Intro>
-          A moving poem your mother will love
-        </Intro>
-        <Blockquote>
-          {this.state.generatedPoem}
-        </Blockquote>
-        <Cite>-mbot</Cite>
-        <h2>Credits</h2>
-        <Row>
-          {this.state.poems.map(Card)}
-        </Row>
-      </AppContainer>
-    )
-  }
+App.propTypes = {
+  poems: arrayOf(
+    shape({
+      author: string,
+      title: string,
+      lines: arrayOf(string),
+    })
+  ),
+  generatedPoem: string,
 }
 
-export default App
+App.defaultProps = {
+  poems: '',
+  generatedPoem: '',
+}
+
+const mapStateToProps = ({ poems }) => ({
+  poems,
+  generatedPoem: createPoem(poems),
+})
+
+export default compose(
+  connect(mapStateToProps, { fetchPoems }),
+  lifecycle({
+    componentDidMount() {
+      this.props.fetchPoems('/title/mother')
+    },
+  })
+)(App)
