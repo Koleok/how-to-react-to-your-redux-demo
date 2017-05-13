@@ -1,37 +1,52 @@
-import React from 'react'
-import styled from 'styled-components'
-import logo from './logo.svg'
+import React, { Component } from 'react'
+import { string } from 'prop-types'
+import { Row } from 'react-styled-flexboxgrid'
 
-const Container = styled.div`
-  text-align: center;
-`
+import { getPoems } from './api'
+import { createPoem } from './utils'
 
-const Logo = styled.img`
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-`
+import {
+  AppContainer,
+  Blockquote,
+  Card,
+  Cite,
+  Header,
+  Intro,
+  Logo,
+} from './components'
 
-const Header = styled.div`
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-`
+class App extends Component {
+  static propTypes = { poem: string }
 
-const Intro = styled.p`
-  font-size: large;
-`
+  state = { generatedPoem: '', poems: [] }
 
-const App = () => (
-  <Container className="App">
-    <Header className="App-header">
-      <Logo src={logo} className="App-logo" alt="logo" />
-      <h2>Welcome to React</h2>
-    </Header>
-    <Intro className="App-intro">
-      To get started, edit <code>src/App.js</code> and save to reload.
-    </Intro>
-  </Container>
-)
+  componentDidMount() {
+    getPoems('/title/mother')
+      .map(poems => ({ poems, generatedPoem: createPoem(poems) }))
+      .fork(console.error, this.setState.bind(this))
+  }
+
+  render() {
+    return (
+      <AppContainer>
+        <Header>
+          <Logo>❤️</Logo>
+          <h2>{"Mother's day Poetry Generator"}</h2>
+        </Header>
+        <Intro>
+          A moving poem your mother will love
+        </Intro>
+        <Blockquote>
+          {this.state.generatedPoem}
+        </Blockquote>
+        <Cite>-mbot</Cite>
+        <h2>Credits</h2>
+        <Row>
+          {this.state.poems.map(Card)}
+        </Row>
+      </AppContainer>
+    )
+  }
+}
 
 export default App

@@ -42,6 +42,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 0,
     'import/prefer-default-export': 0,
     'react/jsx-filename-extension': 0,
+    'react/prop-types': 1,
     'react/forbid-prop-types': 0,
     'react/no-unused-prop-types': 1,
     'react/require-default-props': 0,
