@@ -2,6 +2,7 @@
   "name": "how-to-react-to-your-redux",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://koleok.github.io/how-to-react-to-your-redux-demo",
   "devDependencies": {
     "babel-eslint": "^7.2.3",
     "babel-preset-es2015": "^6.24.1",
@@ -13,6 +14,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.3",
+    "gh-pages": "^1.0.0",
     "husky": "^0.13.3",
     "lint-staged": "^3.4.1",
     "prettier": "^1.3.1",
@@ -49,7 +51,9 @@
     "lint:fix": "yarn lint -- --fix",
     "prepush": "yarn test",
     "precommit": "yarn lint:staged",
-    "format": "./node_modules/.bin/prettier-eslint \"*src/**/*.js\" --write"
+    "format": "./node_modules/.bin/prettier-eslint \"*src/**/*.js\" --write",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "lint-staged": {
     "*.js": [
