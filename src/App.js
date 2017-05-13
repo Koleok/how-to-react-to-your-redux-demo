@@ -49,9 +49,14 @@ App.propTypes = {
 }
 
 App.defaultProps = {
-  poems: '',
+  poems: [],
   generatedPoem: '',
 }
+
+// This is to let a test import the Component
+// prior to being composed with the lifecycle
+// call and redux wiring below
+export const Component = App
 
 const mapStateToProps = ({ poems }) => ({
   poems,
