@@ -1,0 +1,55 @@
+module.exports = {
+  env: {
+    jest: true,
+    jasmine: true,
+    browser: true,
+    node: true,
+  },
+  parser: 'babel-eslint',
+  plugins: ['import'],
+  extends: ['airbnb', 'plugin:import/errors', 'plugin:import/warnings'],
+  rules: {
+    'comma-dangle': [
+      'error',
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'ignore',
+      },
+    ],
+    'max-len': [
+      'error',
+      {
+        code: 80,
+        ignoreComments: true,
+      },
+    ],
+    'newline-per-chained-call': [
+      'error',
+      {
+        ignoreChainWithDepth: 5,
+      },
+    ],
+    semi: ['error', 'never'],
+    'jsx-a11y/click-events-have-key-events': 0,
+    'react/display-name': 0,
+    'func-names': 0,
+    'import/extensions': 0,
+    'no-mixed-operators': 0,
+    'no-confusing-arrow': 0,
+    'import/no-extraneous-dependencies': 0,
+    'import/prefer-default-export': 0,
+    'react/jsx-filename-extension': 0,
+    'react/forbid-prop-types': 0,
+    'react/no-unused-prop-types': 1,
+    'react/require-default-props': 0,
+    'jsx-a11y/no-static-element-interactions': 0,
+    'jsx-a11y/anchor-has-content': 0,
+    'jsx-a11y/label-has-for': 0,
+    'jsx-a11y/href-no-hash': 0,
+    'new-cap': 0,
+    'no-underscore-dangle': 0,
+  },
+}
