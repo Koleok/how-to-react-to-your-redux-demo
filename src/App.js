@@ -1,10 +1,10 @@
 import React from 'react'
-import { arrayOf, shape, string } from 'prop-types'
+import { arrayOf, func, shape, string } from 'prop-types'
 import { Row } from 'react-styled-flexboxgrid'
 import { compose, lifecycle } from 'recompose'
 import { connect } from 'react-redux'
 
-import { fetchPoems } from './redux'
+import { fetchPoems, randomPoem } from './redux'
 import { createPoem } from './utils'
 
 import {
@@ -17,7 +17,7 @@ import {
   Logo,
 } from './components'
 
-const App = ({ poems, generatedPoem }) => (
+const App = ({ poems, generatedPoem, ...actions }) => (
   <AppContainer>
     <Header>
       <Logo>❤️</Logo>
@@ -26,7 +26,7 @@ const App = ({ poems, generatedPoem }) => (
     <Intro>
       A moving poem your mother will love
     </Intro>
-    <Blockquote>
+    <Blockquote onClick={() => actions.randomPoem(createPoem(poems))}>
       {generatedPoem}
     </Blockquote>
     <Cite>-mbot</Cite>
@@ -44,13 +44,17 @@ App.propTypes = {
       title: string,
       lines: arrayOf(string),
     })
-  ),
-  generatedPoem: string,
+  ).isRequired,
+  generatedPoem: string.isRequired,
+  fetchPoems: func.isRequired,
+  randomPoem: func.isRequired,
 }
 
 App.defaultProps = {
   poems: [],
   generatedPoem: '',
+  fetchPoems: () => {},
+  randomPoem: () => {},
 }
 
 // This is to let a test import the Component
@@ -58,13 +62,13 @@ App.defaultProps = {
 // call and redux wiring below
 export const Component = App
 
-const mapStateToProps = ({ poems }) => ({
+const mapStateToProps = ({ poems, generatedPoem }) => ({
   poems,
-  generatedPoem: createPoem(poems),
+  generatedPoem,
 })
 
 export default compose(
-  connect(mapStateToProps, { fetchPoems }),
+  connect(mapStateToProps, { fetchPoems, randomPoem }),
   lifecycle({
     componentDidMount() {
       this.props.fetchPoems('/title/mother')
